@@ -1,123 +1,58 @@
 <?php
 
+session_start();
 
-/////////////
-// main logic
-/////////////
+if( array_key_exists('username', $_SESSION) )
+    set_password_view();
+else
+    authenticate_process();
 
 
-/////////
-// global
-/////////
+// set_password_process
+///////////////////////
 
-function alert($message) {
-    echo '<p style="color:red;">'.$message.'</p>';
+function set_password_process($alert_msg=NULL) {
+    // set_password
+    // if success:
+    //     clean session
+    //     response success page
+    // else:
+    //     render set password page and alert something is wrong
 }
 
 
-///////
-// main
-///////
+// authenticate_process
+///////////////////////
 
-if ( array_key_exists('username', $_POST)==False )
-    return_input_user_page();
-
-
-$username = $_POST['username'];
-$QA = get_question_from_database($username);
-$question = $QA[0];
-$answer = $QA[1];
-if ( !$question )
-    return_input_user_page($error='There is no question/answer of the user.');
-
-if ( array_key_exists('answer', $_POST)==False )
-    return_user_and_question_page();
-
-if ( check_answer_from_database($_POST['username'], $_POST['answer'])==False )
-    return_user_and_question_page($error='The answer of the question is wrong.');
-
-if ( array_key_exists('password', $_POST)==False )
-    return_set_password_page();
-
-if ( set_password($_POST['username'], $_POST['password'])==False )
-    return_set_password_page($error="Something wrong thus set password failed.");
-
-return_set_password_successfully_page();
-
-
-//////////
-// methods
-//////////
-
-function get_question_from_database($user) {
+function authenticate_view() {
+    if( array_key_exists('username', $_GET)===False )
+        authenticate_render();
+    else {
+        $username = $_GET['username']; 
+        if( array_key_exists('question', $_GET)===False ) {
+            if( ($question=get_question($username))===NULL ) 
+                authenticate_render($username=$username,
+                                    $alert='Question doesn`t exist.')
+            else
+                authenticate_render($username=$username,
+                                    $question=$question)
+        }
+        else {
+            $question = $_GET['question'];
+            if( array_key_exists('answer', $_POST)===False )
+                authenticate_render($username=$username,
+                                    $question=$question)
+            else {
+                if( check_answer($username=$username,$answer=$answer)===False )
+                     authenticate_render($username=$username,
+                                         $question=$question,
+                                         $alert='Answer is wrong.')
+                else
+                    echo 'done';
+                    // set session
+                    // render set password page
+        }
+    }
 }
-
-function check_answer_from_database($user, $ans) {
-}
-
-function set_password($user, $pass) {
-}
-
-
-////////
-// pages
-////////
-
-function return_input_user_page($error=NULL) {
-
-?>
-<? if($error) alert($error); ?>
-<form method="post">
-  <label>Please Enter Your Faculty Username</label>
-  <input name="username" placeholder="UserName" />
-  <input type="submit" value="Submit" />
-</form>
-<?
-      
-}
-
-function return_user_and_question_page($error=NULL) {
-
-$username = $GLOBALS["username"];
-$question = $GLOBALS["question"];
-
-?>
-<? if($error) alert($error); ?>
-<form method="post">
-  <label>Please Enter Answer the Question: <?echo $question?></label>
-  <input type="hidden" name="username" value="<?echo $username?>" />
-  <input               name="username" value="<?echo $username?>" />
-  <input type="submit" value="Submit" />
-</form>
-<?
-
-}
-
-function return_set_password_page($error=NULL) {
-
-?>
-<? if($error) alert($error); ?>
-<form method="post">
-  <label>Please Enter Your Faculty Username</label>
-  <input name="username" placeholder="UserName" />
-  <input type="submit" value="Submit" />
-</form>
-<?
-
-}
-
-function return_set_password_successfully_page($error=NULL) {
-
-?>
-<? if($error) alert($error); ?>
-<form method="post">
-  <label>Please Enter Your Faculty Username</label>
-  <input name="username" placeholder="UserName" />
-  <input type="submit" value="Submit" />
-</form>
-<?
-
-}
-
 
 ?>
