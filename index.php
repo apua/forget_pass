@@ -25,14 +25,6 @@ function set_password_view() {
         else
             session_unset();
             success_render();
- 
-        
-    // set_password
-    // if success:
-    //     clean session
-    //     response success page
-    // else:
-    //     render set password page and alert something is wrong
     }
 }
 
@@ -72,15 +64,14 @@ function authenticate_view() {
 // templates (renders)
 //////////////////////
 
-function set_password_render($alert) {
+function set_password_render($username, $alert) {
 
 ?>
-
 <?if ($alert!==NULL) {?><p style="color: red;"><?echo $alert?></p><?}?>
 <form method="post">
-    <label>Set New Password</label>
+    <label>Set Password of <?echo $username?></label>
     <input name="password" />
-    <label>Password Confirm</label>
+    <label>Confirm Password</label>
     <input name="confirm_password" />
     <input type="submit" value="Submit" />
 </form>
@@ -100,8 +91,8 @@ function authenticate_render($username, $question, $answer, $alert) {
     <?if ($question!==NULL) {?>
     <label><?echo $question?></label>
     <input name="answer" />
-    <?}?>
     <input type="submit" value="Submit" />
+    <?}?>
     <input type=hidden name="question" value="<?echo $question?>" />
 </form>
 <?
