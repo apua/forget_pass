@@ -12,16 +12,16 @@ else
 ///////////////////////
 
 function set_password_view() {
+    $username = $_SESSION['username'];
     if( array_key_exists('password', $_POST)===False || 
         array_key_exists('confirm_password', $_POST)===False ||
         $_POST['password']!==$_POST['confirm_password']) {
-        set_password_render('You should enter password and confirm.');
+        set_password_render($username, 'You should enter password and confirm.');
     }
     else {
-        $username = $_SESSION['username'];
         $password=$_POST['password'];
         if( set_password($username,$password)===False )
-            set_password_render('Set password failed, please try again later or contact admin.');
+            set_password_render($username, 'Set password failed, please try again later or contact admin.');
         else
             session_unset();
             success_render();
@@ -54,7 +54,7 @@ function authenticate_view() {
                     authenticate_render($username,$question,NULL,'Answer is wrong.');
                 else
                     $_SESSION['username'] = $username;
-                    set_password_render('');
+                    set_password_render($username, '');
             }
         }
     }
