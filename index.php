@@ -99,6 +99,7 @@ if ($alert!==NULL) echo '<p style="color: red;">'.$alert.'</p>';
     <? } else { ?>
     <label><?echo $question.' of '.$username?></label>
     <input name="answer" />
+    <input type=hidden name="username" value="<?echo $username?>" />
     <input type=hidden name="question" value="<?echo $question?>" />
     <?}?>
 
@@ -125,9 +126,31 @@ exit();
 // methods
 //////////
 
+function get_data($username) {
+
+    // add connect database check and query check in the future
+
+    require('../config.inc.php');
+    
+    $linker = mysql_connect($mysqlauth_server,
+                            $mysqlauth_acct_admin,
+                            $mysqlauth_pass_admin);
+    $query = "SELECT question FROM qa WHERE username='$username';";
+    $result = mysql_db_query($mysqlauth_db, $query, $linker);
+    if( $row=mysql_fetch_array($result) )
+        return $row;
+    else
+        return NULL;
+
+}
+
+
 function get_question($username) {
-    //return NULL;
-    return "My Question";
+
+    if( $row=get_data($username) )
+        return $row['question'];
+    return NULL;
+    
 }
 
 
