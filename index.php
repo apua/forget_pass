@@ -16,20 +16,20 @@ else
 ///////////////////////
 
 function set_password_view() {
+
     $username = $_SESSION['username'];
     if( array_key_exists('password', $_POST)===False || 
         array_key_exists('confirm_password', $_POST)===False ||
         $_POST['password']!==$_POST['confirm_password']) {
         set_password_render($username, 'You should enter password and confirm.');
     }
-    else {
-        $password=$_POST['password'];
-        if( set_password($username,$password)===False )
-            set_password_render($username, 'Set password failed, please try again later or contact admin.');
-        else
-            session_unset();
-            success_render();
-    }
+
+    $password=$_POST['password'];
+    if( set_password($username,$password)===False )
+        set_password_render($username, 'Set password failed, please try again later or contact admin.');
+
+    session_unset();
+    success_render();
 }
 
 
