@@ -28,7 +28,7 @@ function set_password_view() {
     if( set_password($username,$password)===False )
         set_password_render($username, 'Set password failed, please try again later or contact admin.');
 
-    session_unset();
+    session_destroy();
     success_render();
 }
 
