@@ -43,7 +43,8 @@ function authenticate_view() {
 
     $username = $_POST['username']; 
     if( ! array_key_exists('question', $_POST) ) {
-        if( ! ($question=get_question($username)) ) 
+        $question = get_question($username);
+        if( ! ($question) ) 
             authenticate_render($username,NULL,NULL,'Question doesn`t exist.');
         else
             authenticate_render($username,$question,NULL,NULL);

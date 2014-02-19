@@ -1,6 +1,5 @@
 <?php
 
-function f() {}
-f("a"=>1);
+echo ""?1:0;
 
 ?>
