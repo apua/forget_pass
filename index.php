@@ -88,14 +88,16 @@ exit();
 function authenticate_render($username, $question, $answer, $alert) {
 
 // 應該要避免 HTML injection 
+
+if ($alert!==NULL) echo '<p style="color: red;">'.$alert.'</p>';
+
 ?>
-<?if ($alert!==NULL) {?><p style="color: red;"><?echo $alert?></p><?}?>
 <form method="post">
+    <? if ($question===NULL) { ?>
     <label>Username</label>
     <input name="username" value="<?echo $username?>" />
-
-    <?if ($question!==NULL) {?>
-    <label><?echo $question?></label>
+    <? } else { ?>
+    <label><?echo $question.' of '.$username?></label>
     <input name="answer" />
     <input type=hidden name="question" value="<?echo $question?>" />
     <?}?>
@@ -103,6 +105,8 @@ function authenticate_render($username, $question, $answer, $alert) {
     <input type="submit" value="Submit" />
 </form>
 <?
+
+if ($question!==NULL) echo '<a href=".">It is not my username.</a>';
 
 exit();
 
