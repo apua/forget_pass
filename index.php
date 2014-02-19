@@ -127,36 +127,31 @@ exit();
 //////////
 
 function get_data($username) {
-
     // add connect database check and query check in the future
-
     require('../config.inc.php');
-    
     $linker = mysql_connect($mysqlauth_server,
                             $mysqlauth_acct_admin,
                             $mysqlauth_pass_admin);
-    $query = "SELECT question FROM qa WHERE username='$username';";
+    $query = "SELECT * FROM qa WHERE username='$username';";
     $result = mysql_db_query($mysqlauth_db, $query, $linker);
     if( $row=mysql_fetch_array($result) )
         return $row;
     else
         return NULL;
-
 }
 
 
 function get_question($username) {
-
     if( $row=get_data($username) )
         return $row['question'];
     return NULL;
-    
 }
 
 
 function check_answer($username, $answer) {
-    //return False; 
-    return True;
+    if( $row=get_data($username) )
+        return $row['answer']===$answer;
+    return NULL;
 }
 
 
