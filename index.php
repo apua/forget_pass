@@ -38,23 +38,23 @@ function set_password_view() {
 
 function authenticate_view() {
 
-    if( array_key_exists('username', $_POST)===False )
+    if( ! array_key_exists('username', $_POST) )
         authenticate_render(NULL,NULL,NULL,NULL);
 
     $username = $_POST['username']; 
-    if( array_key_exists('question', $_POST)===False ) {
-        if( ($question=get_question($username))===NULL ) 
+    if( ! array_key_exists('question', $_POST) ) {
+        if( ! ($question=get_question($username)) ) 
             authenticate_render($username,NULL,NULL,'Question doesn`t exist.');
         else
             authenticate_render($username,$question,NULL,NULL);
     }
 
     $question = $_POST['question'];
-    if( array_key_exists('answer', $_POST)===False )
+    if( ! array_key_exists('answer', $_POST) )
         authenticate_render($username,$question,NULL,NULL);
                             
     $answer = $_POST['answer'];
-    if( check_answer($username,$answer)===False )
+    if( ! check_answer($username,$answer) )
         authenticate_render($username,$question,NULL,'Answer is wrong.');
     else {
         $_SESSION['username'] = $username;
