@@ -2,6 +2,10 @@
 
 session_start();
 
+if( array_key_exists('timeout', $_SESSION) &&
+    $_SESSION['timeout'] + 10 < time() )
+    session_unset();
+
 if( array_key_exists('username', $_SESSION) )
     set_password_view();
 else
@@ -33,30 +37,29 @@ function set_password_view() {
 ////////////////////
 
 function authenticate_view() {
+
     if( array_key_exists('username', $_POST)===False )
         authenticate_render(NULL,NULL,NULL,NULL);
+
+    $username = $_POST['username']; 
+    if( array_key_exists('question', $_POST)===False ) {
+        if( ($question=get_question($username))===NULL ) 
+            authenticate_render($username,NULL,NULL,'Question doesn`t exist.');
+        else
+            authenticate_render($username,$question,NULL,NULL);
+    }
+
+    $question = $_POST['question'];
+    if( array_key_exists('answer', $_POST)===False )
+        authenticate_render($username,$question,NULL,NULL);
+                            
+    $answer = $_POST['answer'];
+    if( check_answer($username,$answer)===False )
+        authenticate_render($username,$question,NULL,'Answer is wrong.');
     else {
-        $username = $_POST['username']; 
-        if( array_key_exists('question', $_POST)===False ) {
-            if( ($question=get_question($username))===NULL ) 
-                authenticate_render($username,NULL,NULL,'Question doesn`t exist.');
-            else
-                authenticate_render($username,$question,NULL,NULL);
-        }
-        else {
-            $question = $_POST['question'];
-            if( array_key_exists('answer', $_POST)===False )
-                authenticate_render($username,$question,NULL,NULL);
-                                    
-            else {
-                $answer = $_POST['answer'];
-                if( check_answer($username,$answer)===False )
-                    authenticate_render($username,$question,NULL,'Answer is wrong.');
-                else
-                    $_SESSION['username'] = $username;
-                    set_password_render($username, '');
-            }
-        }
+        $_SESSION['username'] = $username;
+        $_SESSION['timeout'] = time();
+        set_password_render($username, '');
     }
 }
 
@@ -77,6 +80,8 @@ function set_password_render($username, $alert) {
 </form>
 <?
 
+exit();
+
 }
 
 
@@ -88,19 +93,28 @@ function authenticate_render($username, $question, $answer, $alert) {
 <form method="post">
     <label>Username</label>
     <input name="username" value="<?echo $username?>" />
+
     <?if ($question!==NULL) {?>
     <label><?echo $question?></label>
     <input name="answer" />
-    <input type="submit" value="Submit" />
-    <?}?>
     <input type=hidden name="question" value="<?echo $question?>" />
+    <?}?>
+
+    <input type="submit" value="Submit" />
 </form>
 <?
+
+exit();
 
 }
 
 
 function success_render() {
+
+echo 'success_render';
+
+exit();
+
 }
 
 
@@ -117,6 +131,7 @@ function check_answer($username, $answer) {
     //return False; 
     return True;
 }
+
 
 function set_password($username, $password) {
     return True;
