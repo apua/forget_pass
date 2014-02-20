@@ -1,34 +1,41 @@
 #!/bin/sh
 
-PATH=''
+PATH='/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin'
 
-# checks
-echo "vars:" $1 $2
-echo "num of vars:" $#
+# checks:
 # log and backup should be root only
 # file lock
+
+echo "vars:" $1 $2
+echo "num of vars:" $#
 
 
 # initial variables
 username=$1
 password=$2
-md5_pass=`/usr/bin/openssl passwd -1 $password`
-logfile='password_change.log'
+md5_hash=`openssl passwd -1 $password`
+
 yp_dir='/var/yp'
-passwd='/var/yp/master.passwd'
-backup='master.passwd.last'
-date=`/bin/date "+%Y-%m-%d %H:%M:%S"`
+bk_dir='backup'
+passwd="$yp_dir/master.passwd"
+backup="$bk_dir/master.passwd.`echo $(ls $bk_dir | wc -l)`"
+                                        
+date=`/bin/date '+%Y-%m-%d %H:%M:%S'`
+logfile='chpass.log'
+
+echo $md5_hash $backup $date
 
 
 # backup original username/password in YP
-/usr/bin/grep $username $passwd \
-    | /usr/bin/awk -F':' -vd="$date" '{print d,$1":"$2}' \
-    >> $logfile
+grep $username $passwd | awk -F':' -vd="$date" '{print d,$1":"$2}' >> $logfile
+
 
 # change password 
 # 1. backup
-/bin/cp -p $passwd $backup
+cp -p $passwd $backup
 # 2. modify
-/usr/bin/sed -E 's/^('$username':)[^:]*(.*)$/\1'$md5_pass'\2/' < $backup > $passwd
+sed -E "s:^($username\:)[^\:]*(.*)$:\1$md5_hash\2:" < $backup > $passwd
 # 3. make
 # (cd $yp_dir && make) >> $logfile
+
+diff $backup $passwd 
