@@ -6,8 +6,8 @@ PATH='/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin'
 # log and backup should be root only
 # file lock
 
-echo "vars:" $1 $2
-echo "num of vars:" $#
+#echo "vars:" $1 $2
+#echo "num of vars:" $#
 
 
 # initial variables
@@ -23,7 +23,7 @@ backup="$bk_dir/master.passwd.`echo $(ls $bk_dir | wc -l)`"
 date=`/bin/date '+%Y-%m-%d %H:%M:%S'`
 logfile='chpass.log'
 
-echo $md5_hash $backup $date
+#echo $md5_hash $backup $date
 
 
 # backup original username/password in YP
@@ -36,6 +36,6 @@ cp -p $passwd $backup
 # 2. modify
 sed -E "s:^($username\:)[^\:]*(.*)$:\1$md5_hash\2:" < $backup > $passwd
 # 3. make
-# (cd $yp_dir && make) >> $logfile
+(cd $yp_dir && make) >> $logfile
 
-diff $backup $passwd 
+#diff $backup $passwd 
