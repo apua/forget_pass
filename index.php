@@ -129,7 +129,7 @@ exit();
 
 function get_data($username) {
     // add connect database check and query check in the future
-    require('../config.inc.php');
+    require('config.inc.php');
     $linker = mysql_connect($mysqlauth_server,
                             $mysqlauth_acct_admin,
                             $mysqlauth_pass_admin);
