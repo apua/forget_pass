@@ -3,8 +3,8 @@
 session_start();
 
 if( array_key_exists('timeout', $_SESSION) &&
-    $_SESSION['timeout'] + 10 < time() )
-    session_unset();
+    $_SESSION['timeout'] + 60 < time() )
+    session_destroy();
 
 if( array_key_exists('username', $_SESSION) )
     set_password_view();

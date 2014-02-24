@@ -18,3 +18,15 @@ check if changing password successfully ::
     > printf "user apua\npass qwer1234\nquit\n" | nc 0 110
 
 config.inc.php 也放在同一資料夾
+
+settings
+--------
+
+login/logout 應另做一份 log
+
+應有另一份欄位顯示成功與否
+
+security
+--------
+
+**取出資料必得 html escape ; 存入資料庫必得 MySQL escape**
