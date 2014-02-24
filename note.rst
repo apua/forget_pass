@@ -19,6 +19,14 @@ check if changing password successfully ::
 
 config.inc.php 也放在同一資料夾
 
+deploy
+------
+
+Apache, 路徑, 權限
+suders, chpass.sh 可跑
+資料庫開表, 確認儲存輸入輸出都是 UTF8
+PHP
+
 settings
 --------
 
