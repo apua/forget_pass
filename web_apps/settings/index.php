@@ -3,6 +3,7 @@
 //// main
 
 session_start();
+require_once('../template.php');
 
 if( array_key_exists('username', $_SESSION) )
     settings_view();
@@ -56,24 +57,39 @@ function settings_view($data=NULL,$remind=NULL,$alert=NULL) {
 
 function settings_form($data,$remind,$alert) {
 
-    echo "<h3>{$_SESSION['username']}</h3>\n";
-    if ($remind) echo "<p style='color: green;'>{$remind}</p>\n";
-    if ($alert) echo "<p style='color: red;'>{$alert}</p>\n";
+    above();
     ?>
-    <form method="post">
-        <label>Staff Number</label>
-            <input name="staffnum" value="<?echo $data['staffnum']?>" />
-        <label>Real Name</label>
-            <input name="realname" value="<?echo $data['realname']?>" />
-        <label>Question for Resetting Password</label>
-            <input name="question" value="<?echo $data['question']?>" />
-        <label>Answer of Question</label>
-            <input name="answer" value="<?echo $data['answer']?>" />
-
-        <input type="submit" value="Save" />
+    <form class="form-signin" method="post">
+        <? if($alert) {
+            ?>
+            <div class="alert alert-error">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>Warning:</strong> <?echo$alert?>
+            </div>
+            <?
+        } ?>
+        <? if($remind) {
+            ?>
+            <div class="alert alert-success">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>Notice:</strong> <?echo$remind?>
+            </div>
+            <?
+        } ?>
+        <h2>User: <?echo$_SESSION['username']?></h2>
+        <input type="text" name="staffnum" value="<?echo $data['staffnum']?>"
+               class="input-block-level" placeholder="Staff number" />
+        <input type="text" name="realname" value="<?echo $data['realname']?>"
+               class="input-block-level" placeholder="Full name"/>
+        <input type="text" name="question" value="<?echo $data['question']?>"
+               class="input-block-level" placeholder="Set a question"/>
+        <input type="text" name="answer"   value="<?echo $data['answer']?>" 
+               class="input-block-level" placeholder="Set an answer of the question"/>
+        <button class="btn btn-primary" type="submit">Save</button>
+        <a href="logout.php" style="float:right;">logout</a>
     </form>
     <?
-    echo '<a href="logout.php">logout</a>';
+    below();
 
 }
 
@@ -86,17 +102,26 @@ function self_redirect() {
 
 function login_form($alert) {
 
-    if($alert!==NULL) echo '<p style="color: red;">'.$alert.'</p>';
-    
+    above();
     ?>
-    <form method="post">
-        <label>Username</label>
-        <input name="username" />
-        <label>Password</label>
-        <input name="password" />
-        <input type="submit" value="Submit" />
+    <form class="form-signin" method="post">
+        <? if($alert) {
+            ?>
+            <div class="alert alert-error">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>Warning:</strong> <?echo$alert?>
+            </div>
+            <?
+        } ?>
+        <h2>Please sign in</h2>
+        <input type="text" class="input-block-level"
+               name="username" placeholder="Username">
+        <input type="password" class="input-block-level"
+               name="password" placeholder="Password">
+        <button class="btn btn-primary" type="submit">Sign in</button>
     </form>
     <?  
+    below();
     
 }
 

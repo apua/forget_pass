@@ -1,6 +1,8 @@
 <?php
 
 session_start();
+require_once('../template.php');
+
 
 session_destroy();
 logout_view();
@@ -15,10 +17,14 @@ function logout_view() {
 
 function logout_form($url) {
 
+    above();
     ?>
-    <p>您已登出</p>
-    <a href='<?echo $url?>'>回到上一頁</a>
+    <div class="form-signin">
+        <p>您已登出</p>
+        <a href='<?echo $url?>'>回到上一頁</a>
+    </div>
     <?
+    below();
 
 }
 

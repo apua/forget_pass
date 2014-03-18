@@ -1,6 +1,7 @@
 <?php
 
 session_start();
+require('../template.php');
 
 if( array_key_exists('timeout', $_SESSION) &&
     $_SESSION['timeout'] + 60 < time() )
@@ -70,18 +71,28 @@ function authenticate_view() {
 
 function set_password_render($username, $alert) {
 
-?>
-<?if ($alert!==NULL) {?><p style="color: red;"><?echo $alert?></p><?}?>
-<form method="post">
-    <label>Set Password of <?echo $username?></label>
-    <input name="password" />
-    <label>Confirm Password</label>
-    <input name="confirm_password" />
-    <input type="submit" value="Submit" />
-</form>
-<?
-
-exit();
+    above();
+    ?>
+    <form class="form-signin" method="post">
+        <? if($alert) {
+            ?>
+            <div class="alert alert-error">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>Warning:</strong> <?echo$alert?>
+            </div>
+            <?
+        } ?>
+        <h2>Reset Password</h2>
+        <h4>User: <?echo $username?></h4>
+        <input type="password" class="input-block-level"
+               name="password" placeholder="Password">
+        <input type="password" class="input-block-level"
+               name="confirm_password" placeholder="Repeat password again">
+        <button class="btn btn-primary" type="submit">Sign in</button>
+    </form>
+    <?
+    below();
+    exit();
 
 }
 
@@ -90,36 +101,50 @@ function authenticate_render($username, $question, $answer, $alert) {
 
 // 應該要避免 HTML injection 
 
-if ($alert!==NULL) echo '<p style="color: red;">'.$alert.'</p>';
+    above();
+    ?>
+    <form class="form-signin" method="post">
+        <? if($alert) {
+            ?>
+            <div class="alert alert-error">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>Warning:</strong> <?echo$alert?>
+            </div>
+            <?
+        } ?>
+        <? if ($question===NULL) { ?>
+            <input type="text" name="username"
+                   class="input-block-level" placeholder="Username" />
+        <? } else { ?>
+            <h2>User: <?echo$username?></h2>
+            <h4>Question: <?echo$question?></h4>
+            <input type="text" name="answer"
+                   class="input-block-level" placeholder="The answer of question" />
+            <input type=hidden name="username" value="<?echo $username?>" />
+            <input type=hidden name="question" value="<?echo $question?>" />
+        <?}?>
+        <button class="btn btn-primary" type="submit">Continue</button>
+    </form>
+    <?
+    below();
+    exit();
 
-?>
-<form method="post">
-    <? if ($question===NULL) { ?>
-    <label>Username</label>
-    <input name="username" value="<?echo $username?>" />
-    <? } else { ?>
-    <label><?echo $question.' of '.$username?></label>
-    <input name="answer" />
-    <input type=hidden name="username" value="<?echo $username?>" />
-    <input type=hidden name="question" value="<?echo $question?>" />
-    <?}?>
-
-    <input type="submit" value="Submit" />
-</form>
-<?
-
-if ($question!==NULL) echo '<a href=".">It is not my username.</a>';
-
-exit();
+    if ($question!==NULL) echo '<a href=".">It is not my username.</a>';
 
 }
 
 
 function success_render() {
 
-echo 'success_render';
-
-exit();
+    above();
+    ?>
+    <div class="form-signin">
+        <p>變更成功</p>
+        <a href="http://fwebmail.nctu.edu.tw">連結至 webmail</a>
+    </div>
+    <?
+    below();
+    exit();
 
 }
 
