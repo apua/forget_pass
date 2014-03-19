@@ -88,7 +88,7 @@ function set_password_render($username, $alert) {
                name="password" placeholder="Password">
         <input type="password" class="input-block-level"
                name="confirm_password" placeholder="Repeat password again">
-        <button class="btn btn-primary" type="submit">Sign in</button>
+        <button class="btn btn-primary" type="submit">Save</button>
     </form>
     <?
     below();
@@ -139,7 +139,7 @@ function success_render() {
     above();
     ?>
     <div class="form-signin">
-        <p>變更成功</p>
+        <p>變更成功, 請至 webmail 登入以測試新密碼</p>
         <a href="http://fwebmail.nctu.edu.tw">連結至 webmail</a>
     </div>
     <?
