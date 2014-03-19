@@ -125,12 +125,15 @@ function authenticate_render($username, $question, $answer, $alert) {
             <input type=hidden name="question" value="<?echo $question?>" />
         <?}?>
         <button class="btn btn-primary" type="submit">Continue</button>
+        <? if($question!==NULL) {
+            ?>
+            <a href="." style="float:right;">It is not my username.</a>
+            <?
+        } ?>
     </form>
     <?
     below();
     exit();
-
-    if ($question!==NULL) echo '<a href=".">It is not my username.</a>';
 
 }
 
