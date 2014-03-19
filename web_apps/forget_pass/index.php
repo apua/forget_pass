@@ -20,6 +20,7 @@ function set_password_view() {
 
     $username = $_SESSION['username'];
     if( array_key_exists('password', $_POST)===False || 
+        ! $_POST['password'] ||
         array_key_exists('confirm_password', $_POST)===False ||
         $_POST['password']!==$_POST['confirm_password']) {
         set_password_render($username, 'You should enter password and confirm.');
