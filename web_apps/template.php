@@ -6,7 +6,7 @@ function above() {
 
 ?>
 <!DOCTYPE html>
-<html lang="zh-tw">
+<html lang="zh">
 <head>
     <meta charset="utf-8">
     <title>settings</title>
