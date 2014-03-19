@@ -21,7 +21,7 @@ function logout_form($url) {
     ?>
     <div class="form-signin">
         <p>您已登出</p>
-        <a href='<?echo $url?>'>回到上一頁</a>
+        <a href='<?echo $url?>'>回到登入頁</a>
     </div>
     <?
     below();
