@@ -13,7 +13,7 @@ PATH='/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin'
 # initial variables
 username=$1
 password=$2
-md5_hash=`openssl passwd -1 $password`
+md5_hash=`openssl passwd -1 '$password'`
 
 yp_dir='/var/yp'
 bk_dir='backup'
